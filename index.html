@@ -1,7 +1,10 @@
-<!DOCTYPE html>
-<html>
-<body>
-<h1>Hello World</h1>
-<p>TEST</p>
-</body>
-</html>
+Set-ExecutionPolicy Bypass | out-null
+$awi = 'C:\ProgramData\AfterWindowsInstall'
+rm $awi -Recurse -Force -ErrorAction SilentlyContinue | out-null
+mkdir $awi -Force -ErrorAction SilentlyContinue | out-null
+irm "https://api.github.com/repos/eugen1408/AfterWindowsInstall/zipball/master" -OutFile $awi\setup.zip
+Expand-Archive $awi\setup.zip $awi -Force
+$setup = ls $awi -Filter setup.ps1 -Recurse | select -First 1 -ExpandProperty FullName
+& $setup
+ls $awi -Recurse | Remove-Item -force -recurse | out-null
+rm $awi -Force -ErrorAction SilentlyContinue | out-null
